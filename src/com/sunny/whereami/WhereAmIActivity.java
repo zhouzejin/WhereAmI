@@ -55,28 +55,27 @@ public class WhereAmIActivity extends Activity {
 			double lat = location.getLatitude();
 			double lng = location.getLongitude();
 			latLongString = "Lat:" + lat + "\nLong:" + lng;
-			
+
 			double latitude = location.getLatitude();
 			double longitude = location.getLongitude();
 			Geocoder gc = new Geocoder(this, Locale.getDefault());
-			
+
 			try {
 				List<Address> addresses = gc.getFromLocation(latitude, longitude, 1);
 				StringBuilder sb = new StringBuilder();
 				if (addresses.size() > 0) {
 					Address address = addresses.get(0);
-					
-					for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
+
+					for (int i = 0; i < address.getMaxAddressLineIndex(); i++)
 						sb.append(address.getAddressLine(i)).append("\n");
-						sb.append(address.getPostalCode()).append("\n");
-						sb.append(address.getCountryName());
-					}
-					
-					addressString = sb.toString();
+
+					sb.append(address.getLocality()).append("\n");
+					sb.append(address.getPostalCode()).append("\n");
+					sb.append(address.getCountryName());
 				}
+				addressString = sb.toString();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
 			}
 		}
 		
