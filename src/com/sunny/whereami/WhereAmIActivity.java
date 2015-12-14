@@ -18,10 +18,12 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
+import com.google.android.maps.Overlay;
 
 public class WhereAmIActivity extends MapActivity {
 	
 	private MapController mapController;
+	private MyPositionOverlay positionOverlay;
 	
 	@Override
 	protected boolean isRouteDisplayed() {
@@ -46,6 +48,12 @@ public class WhereAmIActivity extends MapActivity {
 		
 		// 放大
 		mapController.setZoom(17);
+		
+		// 添加MyPositionOverlay
+		positionOverlay = new MyPositionOverlay();
+		List<Overlay> overlays = myMapView.getOverlays();
+		overlays.add(positionOverlay);
+		myMapView.postInvalidate();
 		
 		LocationManager locationManager;
 		String svcName = Context.LOCATION_SERVICE;
@@ -77,6 +85,9 @@ public class WhereAmIActivity extends MapActivity {
 		String addressString = "No address found";
 		
 		if (location != null) {
+			// 更新覆盖物
+			positionOverlay.setLocation(location);
+			
 			// 更新地图位置
 			Double geoLat  = location.getLatitude() * 1E6;
 			Double getLng = location.getLongitude() * 1E6;
