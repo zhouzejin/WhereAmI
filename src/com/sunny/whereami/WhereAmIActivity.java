@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import android.app.Activity;
 import android.content.Context;
 import android.location.Address;
 import android.location.Criteria;
@@ -15,12 +14,38 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class WhereAmIActivity extends Activity {
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
+import com.google.android.maps.MapView;
+
+public class WhereAmIActivity extends MapActivity {
+	
+	private MapController mapController;
+	
+	@Override
+	protected boolean isRouteDisplayed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_where_am_i);
+		
+		// 获得对MapView的引用
+		MapView myMapView = (MapView) findViewById(R.id.myMapView);
+		
+		// 获得MapView的控制器
+		mapController = myMapView.getController();
+		
+		// 配置地图显示选项
+		myMapView.setSatellite(true);
+		myMapView.setBuiltInZoomControls(true);
+		
+		// 放大
+		mapController.setZoom(17);
 		
 		LocationManager locationManager;
 		String svcName = Context.LOCATION_SERVICE;
@@ -52,6 +77,13 @@ public class WhereAmIActivity extends Activity {
 		String addressString = "No address found";
 		
 		if (location != null) {
+			// 更新地图位置
+			Double geoLat  = location.getLatitude() * 1E6;
+			Double getLng = location.getLongitude() * 1E6;
+			GeoPoint point = new GeoPoint(geoLat.intValue(), 
+					getLng.intValue());
+			mapController.animateTo(point);
+			
 			double lat = location.getLatitude();
 			double lng = location.getLongitude();
 			latLongString = "Lat:" + lat + "\nLong:" + lng;

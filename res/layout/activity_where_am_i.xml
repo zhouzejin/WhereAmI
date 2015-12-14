@@ -10,5 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/hello_world" />
+    
+    <com.google.android.maps.MayView
+        android:id="@+id/myMapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:enabled="true"
+        android:clickable="true"
+        android:apiKey="使用fingerprint和APP的package生成apiKey" />
 
 </LinearLayout>
